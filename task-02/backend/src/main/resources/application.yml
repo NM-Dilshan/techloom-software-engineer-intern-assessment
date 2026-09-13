@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: task-02-backend
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:task02;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+    driver-class-name: ${DB_DRIVER_CLASS:org.h2.Driver}
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_AUTO:create-drop}
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: ${SERVER_PORT:8082}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5174}
+
+logging:
+  level:
+    com.techloom.task02: INFO

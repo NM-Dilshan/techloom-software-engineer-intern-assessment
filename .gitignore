@@ -1,0 +1,17 @@
+# Java / Maven
+target/
+*.class
+
+# Node / Vite
+node_modules/
+dist/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.iml

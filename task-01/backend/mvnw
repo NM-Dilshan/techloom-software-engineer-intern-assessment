@@ -1,0 +1,23 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Maven Start Up Batch script
+# ----------------------------------------------------------------------------
+
+# Maven wrapper script for Unix-like systems
+
+APP_NAME="Maven"
+APP_HOME=`dirname "$0"`
+EXECUTABLE="$APP_HOME/mvnw"
+
+if [ ! -x "$EXECUTABLE" ]; then
+    echo "Maven wrapper script not found or not executable."
+    which mvn >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        exec mvn "$@"
+    else
+        echo "Maven not found in PATH. Please install Maven."
+        exit 1
+    fi
+else
+    exec "$EXECUTABLE" "$@"
+fi

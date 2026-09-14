@@ -34,6 +34,10 @@ export const productAPI = {
    * Delete a product
    */
   delete: (id) => api.delete(`/products/${id}`),
+  checkout: (items) => api.post('/checkout', items, { headers: { 'X-User-Id': 'demo-user' } }),
+  pay: (id, result) => api.post(`/orders/${id}/payment`, { result, idempotencyKey: `demo-${id}` }, { headers: { 'X-User-Id': 'demo-user' } }),
+  orders: () => api.get('/orders', { headers: { 'X-User-Id': 'demo-user' } }),
+  cancel: (id) => api.post(`/orders/${id}/cancel`, {}, { headers: { 'X-User-Id': 'demo-user' } }),
 };
 
 export default api;

@@ -1,6 +1,7 @@
 import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material';
 import { Link, Route, Routes } from 'react-router-dom';
 import ProductList from './pages/ProductList';
+import POS from './pages/POS';
 
 function HomePage() {
   return (
@@ -29,11 +30,13 @@ function App() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>Techloom POS</Typography>
           <Button component={Link} to="/" color="inherit">Dashboard</Button>
           <Button component={Link} to="/products" color="inherit">Products</Button>
+          <Button component={Link} to="/pos" color="inherit">POS Checkout</Button>
         </Toolbar>
       </AppBar>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductList />} />
+        <Route path="/pos" element={<POS />} />
       </Routes>
     </Box>
   );

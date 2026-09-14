@@ -1,0 +1,12 @@
+import { useEffect, useState } from 'react';
+import { Alert, Button, Card, CardContent, Container, Stack, TextField, Typography } from '@mui/material';
+import { productAPI } from '../api/productAPI';
+
+export default function POS() {
+  const [products, setProducts] = useState([]); const [quantities, setQuantities] = useState({}); const [order, setOrder] = useState(null); const [orders, setOrders] = useState([]); const [message, setMessage] = useState('');
+  const load = () => productAPI.getAll().then(({ data }) => setProducts(data));
+  useEffect(() => { load(); productAPI.orders().then(({ data }) => setOrders(data)); }, []);
+  const checkout = () => productAPI.checkout(products.filter(p => quantities[p.id] > 0).map(p => ({ productId: p.id, quantity: Number(quantities[p.id]) }))).then(({ data }) => setOrder(data)).catch(e => setMessage(e.response?.data?.message || 'Checkout failed'));
+  const pay = result => productAPI.pay(order.id, result).then(({ data }) => { setOrder(data); load(); });
+  return <Container maxWidth="md" sx={{ py: 4 }}><Typography variant="h4" gutterBottom>POS Checkout</Typography>{message && <Alert severity="error">{message}</Alert>}<Stack spacing={2}>{products.map(p => <Card key={p.id}><CardContent sx={{ display: 'flex', gap: 2, alignItems: 'center' }}><Typography sx={{ flexGrow: 1 }}>{p.name} · ${p.price.toFixed(2)} · {p.availableStock} available</Typography><TextField type="number" size="small" label="Qty" inputProps={{ min: 0, max: p.availableStock }} value={quantities[p.id] || ''} onChange={e => setQuantities({ ...quantities, [p.id]: e.target.value })} /></CardContent></Card>)}</Stack><Button sx={{ mt: 3 }} variant="contained" onClick={checkout}>Reserve and checkout</Button>{order && <Card sx={{ mt: 3 }}><CardContent><Typography>Order #{order.id} · {order.status} · ${order.total.toFixed(2)}</Typography>{order.status === 'RESERVED' && <Stack direction="row" spacing={1} sx={{ mt: 2 }}><Button onClick={() => pay('SUCCESS')} variant="contained">Pay success</Button><Button onClick={() => pay('FAILURE')} color="error">Fail payment</Button><Button onClick={() => pay('TIMEOUT')}>Timeout</Button></Stack>}</CardContent></Card>}<Typography variant="h5" sx={{ mt: 5 }}>Order history</Typography>{orders.map(o => <Typography key={o.id}>#{o.id} · {o.status} · ${o.total.toFixed(2)}</Typography>)}</Container>;
+}

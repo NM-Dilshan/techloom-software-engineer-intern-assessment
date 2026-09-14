@@ -16,10 +16,10 @@ export const commerceAPI = {
   add: (productId, quantity = 1) => client.post('/cart/items', { productId, quantity }, userHeaders()),
   remove: (productId) => client.delete(`/cart/items/${productId}`, userHeaders()),
   checkout: () => client.post('/checkout', {}, userHeaders()),
-  pay: (id, result) => client.post(`/orders/${id}/payment`, { result, idempotencyKey: `demo-${id}` }),
+  pay: (id, result) => client.post(`/orders/${id}/payment`, { result, idempotencyKey: `demo-${id}` }, userHeaders()),
   orders: () => client.get('/orders', userHeaders()),
-  order: (id) => client.get(`/orders/${id}`),
-  cancel: (id) => client.post(`/orders/${id}/cancel`),
+  order: (id) => client.get(`/orders/${id}`, userHeaders()),
+  cancel: (id) => client.post(`/orders/${id}/cancel`, {}, userHeaders()),
 };
 
 export default client;

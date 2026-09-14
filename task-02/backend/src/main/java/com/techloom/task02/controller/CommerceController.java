@@ -6,8 +6,8 @@ public class CommerceController { private final CheckoutService service; private
  @PostMapping("/cart/items") public CartDto add(@RequestHeader(value="X-User-Id",required=false) String u,@Valid @RequestBody CartItemRequest r){return service.add(user(u),r.productId(),r.quantity());}
  @DeleteMapping("/cart/items/{productId}") public CartDto remove(@RequestHeader(value="X-User-Id",required=false) String u,@PathVariable Long productId){return service.remove(user(u),productId);}
  @PostMapping("/checkout") public CheckoutResponse checkout(@RequestHeader(value="X-User-Id",required=false) String u){return service.checkout(user(u));}
- @PostMapping("/orders/{id}/payment") public OrderDto pay(@PathVariable Long id,@Valid @RequestBody PaymentRequest r){return service.pay(id,r.result(),r.idempotencyKey());}
- @PostMapping("/orders/{id}/cancel") public OrderDto cancel(@PathVariable Long id){return service.cancel(id);}
+ @PostMapping("/orders/{id}/payment") public OrderDto pay(@PathVariable Long id,@RequestHeader(value="X-User-Id",required=false) String u,@Valid @RequestBody PaymentRequest r){return service.pay(id,r.result(),r.idempotencyKey(),user(u));}
+ @PostMapping("/orders/{id}/cancel") public OrderDto cancel(@PathVariable Long id,@RequestHeader(value="X-User-Id",required=false) String u){return service.cancel(id,user(u));}
  @GetMapping("/orders") public List<OrderDto> orders(@RequestHeader(value="X-User-Id",required=false) String u){return service.history(user(u));}
- @GetMapping("/orders/{id}") public OrderDto order(@PathVariable Long id){return service.getOrder(id);}
+ @GetMapping("/orders/{id}") public OrderDto order(@PathVariable Long id,@RequestHeader(value="X-User-Id",required=false) String u){return service.getOrder(id,user(u));}
 }
